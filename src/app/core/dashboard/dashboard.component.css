@@ -1,0 +1,46 @@
+.mat-elevation-z8 {
+    box-shadow: none !important;
+    margin: 10px 0px 0px 0px;
+  }
+  
+  .mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  .table-container {
+    height: 500px;
+    overflow: auto;
+  }
+  
+  .filter-date-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .filter-form-field {
+    margin-right: 20px;
+  }
+  
+  .date-form-field {
+    margin-right: 20px;
+  }
+  .checkbox-section {
+    margin: 12px 0;
+  }
+  
+  .check-margin {
+    margin: 0 12px;
+  }
+
+
+
+  .button-button-row {
+    display: table-cell;
+    max-width: 600px;
+  }
+  .button-button-row .mat-mdc-button-base {
+    margin: 8px 8px 8px 0;
+  }
+  
