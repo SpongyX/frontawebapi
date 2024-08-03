@@ -1,5 +1,5 @@
-import { Component, signal, ViewChild } from '@angular/core';
-import { ReactiveFormsModule, FormsModule, FormControl, FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
+import { ReactiveFormsModule, FormsModule, FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
@@ -14,6 +14,11 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Medicines } from '../../interfaces/medicines.interface';
 import { HomeService } from '../../mainpage/dashboard/home.service';
+import { DashboardService } from './dashboard.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+import { UpdateMedComponent } from './update-med/update-med/update-med.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -37,16 +42,21 @@ import { HomeService } from '../../mainpage/dashboard/home.service';
     MatIconModule,
     MatCheckboxModule,
     MatExpansionModule
+    
+    
+    
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
+  readonly dialog = inject(MatDialog);
   readonly panelOpenState = signal(false);
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['checkbox','position', 'name',  'description', 'stock', 'active'];
+  
+  displayedColumns: string[] = ['checkbox','position', 'name',  'description', 'stock', 'active', 'edit'];
   dataSource = new MatTableDataSource<Medicines>();
  
   readonly campaignOne = new FormGroup({
@@ -58,21 +68,51 @@ export class DashboardComponent {
     end: new FormControl(new Date() ),
   });
 
+  readonly medicineForm = new FormGroup({
+    name: new FormControl(),
+    description: new FormControl(),
+    stock: new FormControl(),
+
+  });
   medicines: Medicines[] = [];
 
-  constructor(private homeService: HomeService) {}
+  constructor(private dashboardService: DashboardService,
+    private _snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
-    this.homeService.getAllMed().subscribe((medicines) => {
-      this.medicines = medicines; 
-      this.dataSource.data = this.medicines; 
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      console.log(this.medicines);
+ this.Fetchall();
+  }
+Fetchall() {
+  this.dashboardService.getAllMed().subscribe((medicines) => {
+    this.medicines = medicines; 
+    this.dataSource.data = this.medicines; 
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    console.log(this.medicines);
+  });
+}
+  // openSnackBar() {
+  //   this._snackBar.open("Saved");
+  // }
+
+  // openDialog(medicine: any) {
+  //   this.dialog.open(UpdateMedComponent, {
+  //     data: medicine
+  //   });
+  // }
+  
+  openDialog(medicine: any): void {
+    const dialogRef = this.dialog.open(UpdateMedComponent, {
+      data: medicine
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'saved') {
+        this.Fetchall();
+      }
     });
   }
-
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -85,7 +125,7 @@ export class DashboardComponent {
 
   onToggleChange(element: any): void {
   
-    this.homeService.isActiveUpdateStatus(element.med_id, element.is_active).subscribe(response => {
+    this.dashboardService.isActiveUpdateStatus(element.med_id, element.is_active).subscribe(response => {
       console.log('After toggle:', element.is_active);
     }, error => {
       console.error('Error updating status', error);
@@ -117,7 +157,7 @@ export class DashboardComponent {
     console.log(formattedEndDate);
   
     // Call the service method with formatted dates
-    this.homeService.getByRange(formattedStartDate, formattedEndDate).subscribe(
+    this.dashboardService.getByRange(formattedStartDate, formattedEndDate).subscribe(
       (dataByDateRange: any) => {
         this.dataSource.data = dataByDateRange;
       },
@@ -126,8 +166,31 @@ export class DashboardComponent {
       }
     );
   }
+   
+  addMed() {
+
+    if (this.medicineForm.valid) {
+      const newMedicines: any = this.medicineForm.value;
+      this.dashboardService.AddnewMed(newMedicines).subscribe({
+        next: (response) => {
+          console.log(response);
+          this._snackBar.open("       Saved");
+
+          this.Fetchall();
+          this.medicineForm.reset();
+        },
+        error: (err) => {
+          console.error('Error adding medicine:', err);
+        }
+      });
+    } else {
+      console.log('Form is invalid');
+    }
+  }
   
-  
+  // updateMed() {
+  //   console.log("test")
+  // }
 
   /////////////////////////////////////////////////////////////////////////////////////////////
   // Helper function to format a Date object with time set to 00:00:00.000
@@ -157,4 +220,14 @@ export class DashboardComponent {
   }
   ///////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
 }
+
+
+  
+
+
+
+  
+  

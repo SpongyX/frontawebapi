@@ -17,4 +17,5 @@ export class EndpointsService {
   public isActiveUpdate: string = this.baseUrl + 'Medicines/isActiveUpdate/';
   public getByRange: string = this.baseUrl + 'Medicines/GetByDateRange?';
   public addNewMedicine: string = this.baseUrl + 'Medicines/AddNewMedicine/';
+  public updateMedicine: string = this.baseUrl + 'Medicines/UpdateMed/';
 }

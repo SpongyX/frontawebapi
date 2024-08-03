@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Medicine Details</h2>
+<mat-dialog-content>
+
+    <form  class="update-form"  [formGroup]="medicineUpdateForm"  (ngSubmit)="updateMed()">
+        <mat-form-field class="update-full-widthh" >
+
+            <mat-label>ID</mat-label>
+            <input matInput placeholder="ID" formControlName="med_id" value="{{data.med_id}}">
+          </mat-form-field>
+        <mat-form-field class="update-full-width">
+          <mat-label>Name</mat-label>
+          <input matInput placeholder="Medicine Name" formControlName="name" value="{{data.name}}">
+        </mat-form-field>
+        
+      
+        <mat-form-field class="update-full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput placeholder="Medicine Description..." formControlName="description" value="{{data.description}}"></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="update-full-width">
+            <mat-label>In Stock</mat-label>
+            <input matInput placeholder="Stock Quantity" formControlName="stock" value="{{data.stock}}">
+          </mat-form-field>
+          <mat-dialog-actions>
+            <button  mat-button (click)="updateMed()">Save</button>
+          <button mat-button mat-dialog-close>Close</button>
+        </mat-dialog-actions>
+      </form>
+
+</mat-dialog-content>
+

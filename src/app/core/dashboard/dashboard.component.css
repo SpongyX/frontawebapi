@@ -43,4 +43,26 @@
   .button-button-row .mat-mdc-button-base {
     margin: 8px 8px 8px 0;
   }
+  .new-medicine-full-width {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+
+  .new-medicine-form {
+    width: 100%;
+    display: grid;
+  }
+.expansion-medicine {
+  max-width: 40%;
+  background-color: white;
+
+}
+ 
+.update-icon {
+  cursor: pointer;
   
+}
+.update-icon:hover {
+  transform: scale(1.5); 
+}

@@ -8,6 +8,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DashboardService {
+  addNewMedicine(medicine: any) {
+    throw new Error('Method not implemented.');
+  }
   constructor(
     private http: HttpClient,
     private endpoints: EndpointsService) { }
@@ -35,5 +38,16 @@ export class DashboardService {
       // console.log("HERE " + url +" HERE")
       return this.http.get<any>(url);
 
+    }
+
+    AddnewMed(medicines: Medicines) : Observable<Medicines> {
+      console.log(this.endpoints.addNewMedicine, medicines)
+      return this.http.post<Medicines>(this.endpoints.addNewMedicine, medicines);
+    }
+
+    updateMedicine( medicines: any): Observable<any> 
+    {
+      console.log(this.endpoints.updateMedicine, medicines)
+      return this.http.put<any>(this.endpoints.updateMedicine, medicines);
     }
 }
