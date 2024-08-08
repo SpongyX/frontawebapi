@@ -1,3 +1,4 @@
 .update-form{
     display: grid;
+    min-width: 360px;
 }

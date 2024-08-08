@@ -1,6 +1,6 @@
 import {
   DOCUMENT
-} from "./chunk-AZBFP76M.js";
+} from "./chunk-55VHUV2Y.js";
 import {
   ANIMATION_MODULE_TYPE,
   Inject,
@@ -12,9 +12,9 @@ import {
   setClassMetadata,
   ɵɵdefineInjectable,
   ɵɵinject
-} from "./chunk-OPI33TK3.js";
+} from "./chunk-4MXUTFQG.js";
 
-// ../../node_modules/@angular/animations/fesm2022/animations.mjs
+// node_modules/@angular/animations/fesm2022/animations.mjs
 var AnimationMetadataType;
 (function(AnimationMetadataType2) {
   AnimationMetadataType2[AnimationMetadataType2["State"] = 0] = "State";
@@ -510,4 +510,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-RMEO5T2V.js.map
+//# sourceMappingURL=chunk-QJDXS5RB.js.map

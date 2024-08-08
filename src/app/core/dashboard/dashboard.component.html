@@ -88,7 +88,9 @@
           <td mat-cell *matCellDef="let element"> 
             <mat-checkbox class="check-margin" 
             [disabled]="false"
-            (change)="onCheckChange(element)">
+            (change)="onCheckChange(element)"
+            
+            >
           </mat-checkbox>
           </td>
         </ng-container>
@@ -126,6 +128,7 @@
   
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true "></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        
       </table>
   
       
@@ -137,7 +140,16 @@
       showFirstLastButtons 
       aria-label="Select page of medicines">
     </mat-paginator>
+
+      <!-- <mat-dialog-actions>
+        <button
+          mat-raised-button
+          [disabled]="!isButtonEnabled"
+          (click)="deleteItem(isButtonEnabled)">
+          Delete
+        </button>
+      </mat-dialog-actions> -->
   </div>
   
-  
+
   

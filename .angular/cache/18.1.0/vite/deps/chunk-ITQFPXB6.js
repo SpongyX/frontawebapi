@@ -2,12 +2,12 @@ import {
   ScrollDispatcher,
   ScrollingModule,
   ViewportRuler
-} from "./chunk-7DRRNNDU.js";
+} from "./chunk-EWNIQNRP.js";
 import {
   DomPortalOutlet,
   PortalModule,
   TemplatePortal
-} from "./chunk-ZWJ2F6WG.js";
+} from "./chunk-ELS7JTFF.js";
 import {
   BidiModule,
   Directionality,
@@ -19,11 +19,11 @@ import {
   coerceCssPixelValue,
   hasModifierKey,
   supportsScrollBehavior
-} from "./chunk-67ECVMVL.js";
+} from "./chunk-VBUM2DO4.js";
 import {
   DOCUMENT,
   Location
-} from "./chunk-AZBFP76M.js";
+} from "./chunk-55VHUV2Y.js";
 import {
   ANIMATION_MODULE_TYPE,
   ApplicationRef,
@@ -41,13 +41,21 @@ import {
   NgZone,
   Optional,
   Output,
+  Subject,
+  Subscription,
   TemplateRef,
   ViewContainerRef,
+  __spreadProps,
+  __spreadValues,
   afterNextRender,
   afterRender,
   booleanAttribute,
+  filter,
   inject,
+  merge,
   setClassMetadata,
+  takeUntil,
+  takeWhile,
   untracked,
   ɵɵInputTransformsFeature,
   ɵɵNgOnChangesFeature,
@@ -57,19 +65,9 @@ import {
   ɵɵdefineNgModule,
   ɵɵdirectiveInject,
   ɵɵinject
-} from "./chunk-OPI33TK3.js";
-import {
-  Subject,
-  Subscription,
-  __spreadProps,
-  __spreadValues,
-  filter,
-  merge,
-  takeUntil,
-  takeWhile
-} from "./chunk-F3ARHOHY.js";
+} from "./chunk-4MXUTFQG.js";
 
-// ../../node_modules/@angular/cdk/fesm2022/overlay.mjs
+// node_modules/@angular/cdk/fesm2022/overlay.mjs
 var scrollBehaviorSupported = supportsScrollBehavior();
 var BlockScrollStrategy = class {
   constructor(_viewportRuler, document) {
@@ -2803,4 +2801,4 @@ export {
   CdkConnectedOverlay,
   OverlayModule
 };
-//# sourceMappingURL=chunk-G6Q6KTNH.js.map
+//# sourceMappingURL=chunk-ITQFPXB6.js.map

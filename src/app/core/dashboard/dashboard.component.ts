@@ -19,6 +19,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { UpdateMedComponent } from './update-med/update-med/update-med.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
@@ -41,7 +42,9 @@ import { UpdateMedComponent } from './update-med/update-med/update-med.component
     MatButtonModule,
     MatIconModule,
     MatCheckboxModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatDialogActions,
+    CommonModule
     
     
     
@@ -52,6 +55,8 @@ import { UpdateMedComponent } from './update-med/update-med/update-med.component
 export class DashboardComponent {
   readonly dialog = inject(MatDialog);
   readonly panelOpenState = signal(false);
+isButtonEnabled: boolean = false; 
+
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -134,12 +139,16 @@ Fetchall() {
   
   
 
-  onCheckChange(element: any): void {
+  onCheckChange(element: any) {
   console.log(element.med_id)
+  this.isButtonEnabled = !!element.med_id; 
 
   }
 
+  deleteItem(element: any){
+    console.log(element.med_id)
   
+    }
 
   onSubmitDate(): void {
     let formValue = this.campaignOne.value;

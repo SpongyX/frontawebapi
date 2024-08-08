@@ -1,8 +1,8 @@
 <h2 mat-dialog-title>Medicine Details</h2>
-<mat-dialog-content>
+<mat-dialog-content >
 
     <form  class="update-form"  [formGroup]="medicineUpdateForm"  (ngSubmit)="updateMed()">
-        <mat-form-field class="update-full-widthh" >
+        <mat-form-field style="display: none;">
 
             <mat-label>ID</mat-label>
             <input matInput placeholder="ID" formControlName="med_id" value="{{data.med_id}}">

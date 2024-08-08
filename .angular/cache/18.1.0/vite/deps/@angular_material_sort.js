@@ -7,7 +7,7 @@ import {
   style,
   transition,
   trigger
-} from "./chunk-RMEO5T2V.js";
+} from "./chunk-QJDXS5RB.js";
 import {
   AnimationCurves,
   AnimationDurations,
@@ -16,8 +16,8 @@ import {
   FocusMonitor,
   MatCommonModule,
   SPACE
-} from "./chunk-67ECVMVL.js";
-import "./chunk-AZBFP76M.js";
+} from "./chunk-VBUM2DO4.js";
+import "./chunk-55VHUV2Y.js";
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -32,9 +32,12 @@ import {
   NgModule,
   Optional,
   Output,
+  ReplaySubject,
   SkipSelf,
+  Subject,
   ViewEncapsulation$1,
   booleanAttribute,
+  merge,
   setClassMetadata,
   ɵɵInputTransformsFeature,
   ɵɵNgOnChangesFeature,
@@ -61,14 +64,9 @@ import {
   ɵɵresetView,
   ɵɵrestoreView,
   ɵɵtemplate
-} from "./chunk-OPI33TK3.js";
-import {
-  ReplaySubject,
-  Subject,
-  merge
-} from "./chunk-F3ARHOHY.js";
+} from "./chunk-4MXUTFQG.js";
 
-// ../../node_modules/@angular/material/fesm2022/sort.mjs
+// node_modules/@angular/material/fesm2022/sort.mjs
 var _c0 = ["mat-sort-header", ""];
 var _c1 = ["*"];
 function MatSortHeader_Conditional_3_Template(rf, ctx) {
