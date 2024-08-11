@@ -66,3 +66,6 @@
 .update-icon:hover {
   transform: scale(1.5); 
 }
+.search-button-row {
+  margin: inherit;
+}

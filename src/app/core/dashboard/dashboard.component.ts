@@ -61,7 +61,7 @@ isButtonEnabled: boolean = false;
   @ViewChild(MatSort) sort!: MatSort;
 
   
-  displayedColumns: string[] = ['checkbox','position', 'name',  'description', 'stock', 'active', 'edit'];
+  displayedColumns: string[] = ['position', 'name',  'description', 'stock', 'active', 'edit', 'delete'];
   dataSource = new MatTableDataSource<Medicines>();
  
   readonly campaignOne = new FormGroup({
@@ -145,10 +145,29 @@ Fetchall() {
 
   }
 
-  deleteItem(element: any){
-    console.log(element.med_id)
-  
+  deleteItem(element: any) {
+    if (element && element.med_id !== undefined) {
+      console.log('Element:', element);
+      console.log(element.med_id);
+      this.dashboardService.deleteMedicine(element.med_id).subscribe({
+        next: (response) => {
+          console.log(response);
+          this._snackBar.open("Deleted successfully");
+          this.Fetchall();
+          this.medicineForm.reset();
+        },
+        error: (err) => {
+          console.error('Error deleting medicine:', err);
+        }
+      });
+    } else {
+      console.error('Element is undefined');
     }
+  }
+  
+  
+   
+    
 
   onSubmitDate(): void {
     let formValue = this.campaignOne.value;

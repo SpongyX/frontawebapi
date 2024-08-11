@@ -23,17 +23,15 @@
         <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
         
       </mat-form-field>
-      <section>
-        <div class="example-button-row">
+        <div class="search-button-row">
           <div class="example-flex-container">
             <div class="example-button-container">
-              <button mat-mini-fab aria-label="Example icon button with a delete icon" (click)="onSubmitDate()">
+              <button mat-fab aria-label="Example icon button with a delete icon" (click)="onSubmitDate()">
                 <mat-icon>search</mat-icon>
               </button>
             </div>
           </div>
         </div>
-      </section>
     </div>
    
     <mat-accordion>
@@ -83,17 +81,17 @@
           <td style="display: none;" mat-cell  *matCellDef="let i = index"> {{i + 1}} </td>
         </ng-container>
     
-        <ng-container matColumnDef="checkbox">
-          <th mat-header-cell *matHeaderCellDef>  </th>
-          <td mat-cell *matCellDef="let element"> 
-            <mat-checkbox class="check-margin" 
-            [disabled]="false"
-            (change)="onCheckChange(element)"
-            
-            >
-          </mat-checkbox>
+        <!-- <ng-container matColumnDef="checkbox">
+          <th mat-header-cell *matHeaderCellDef="let element">
+           
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-checkbox class="check-margin"
+              [disabled]="false"
+              (change)="onCheckChange(element)">
+            </mat-checkbox>
           </td>
-        </ng-container>
+        </ng-container> -->
       
    <!-- Name Column -->
         <ng-container matColumnDef="name">
@@ -107,7 +105,7 @@
           <td mat-cell *matCellDef="let element">{{element.description}} </td>
         </ng-container>
   
-        <!-- Weight Column -->
+        <!-- Stock Column -->
         <ng-container matColumnDef="stock">
           <th mat-header-cell *matHeaderCellDef> In Stock </th>
           <td mat-cell *matCellDef="let element"> {{element.stock}} </td>
@@ -122,10 +120,16 @@
         </ng-container>
           <!-- Edit Column -->
           <ng-container matColumnDef="edit">
-            <th mat-header-cell *matHeaderCellDef="let element"> Action </th>
+            <th mat-header-cell *matHeaderCellDef="let element"> Update </th>
             <td mat-cell *matCellDef="let element"> <mat-icon (click)="openDialog(element)" class="update-icon" >edit</mat-icon></td>
           </ng-container>
-  
+
+          <!-- Delete Column -->
+          <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef="let element"> Delete </th>
+            <td mat-cell *matCellDef="let element"> <mat-icon (click)="deleteItem(element)" class="update-icon" >delete</mat-icon></td>
+          </ng-container>
+     
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true "></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         
@@ -141,14 +145,7 @@
       aria-label="Select page of medicines">
     </mat-paginator>
 
-      <!-- <mat-dialog-actions>
-        <button
-          mat-raised-button
-          [disabled]="!isButtonEnabled"
-          (click)="deleteItem(isButtonEnabled)">
-          Delete
-        </button>
-      </mat-dialog-actions> -->
+  
   </div>
   
 

@@ -50,4 +50,13 @@ export class DashboardService {
       console.log(this.endpoints.updateMedicine, medicines)
       return this.http.put<any>(this.endpoints.updateMedicine, medicines);
     }
+  
+    deleteMedicine(medicine_id: any): Observable<any> {
+     
+      let url = `${this.endpoints.deleteMedicine}med_id=${medicine_id}`;
+      console.log(url);
+      return this.http.delete<any>(url);
+    }
+    
+    
 }
