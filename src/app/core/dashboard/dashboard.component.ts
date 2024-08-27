@@ -53,6 +53,12 @@ import { CommonModule } from '@angular/common';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
+
+
+
+
+
+  
   readonly dialog = inject(MatDialog);
   readonly panelOpenState = signal(false);
 isButtonEnabled: boolean = false; 
@@ -72,7 +78,9 @@ isButtonEnabled: boolean = false;
     start: new FormControl(new Date() ),
     end: new FormControl(new Date() ),
   });
-
+  readonly campaignExpiry = new FormGroup({
+    expiry: new FormControl(new Date()),
+  });
   readonly medicineForm = new FormGroup({
     name: new FormControl(),
     description: new FormControl(),
@@ -195,6 +203,22 @@ Fetchall() {
     );
   }
    
+
+getByExpiry(): void {
+  let formValue = this.campaignExpiry.value;
+  let expirydate = formValue.expiry instanceof Date ? formValue.expiry : null;
+  let formattedStartDate = expirydate ? this.formatDate(expirydate) : '';
+  console.log(formattedStartDate);
+  this.dashboardService.getByExpiryDate(formattedStartDate).subscribe(
+    (dataByDateRange: any) => {
+      this.dataSource.data = dataByDateRange;
+    },
+    (error: any) => {
+      console.error('Error fetching medicines', error);
+    }
+  );
+}
+
   addMed() {
 
     if (this.medicineForm.valid) {

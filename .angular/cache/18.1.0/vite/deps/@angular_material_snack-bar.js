@@ -15,6 +15,7 @@ import {
   PortalModule,
   TemplatePortal
 } from "./chunk-ELS7JTFF.js";
+import "./chunk-CGIDZ2MI.js";
 import {
   animate,
   state,
@@ -22,7 +23,6 @@ import {
   transition,
   trigger
 } from "./chunk-QJDXS5RB.js";
-import "./chunk-CGIDZ2MI.js";
 import {
   BreakpointObserver,
   Breakpoints,

@@ -33,7 +33,32 @@
           </div>
         </div>
     </div>
-   
+    <div class="filter-date-container">
+      <mat-form-field class="filter-form-field">
+        <mat-label>Search...</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Aspirin" #input>
+      </mat-form-field>
+      
+  <!-- by expiry date-->
+  <mat-form-field [formGroup]="campaignExpiry">
+    <mat-label>Best before - Expiry Date</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="expiry" >
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  
+      
+        <div class="search-button-row">
+          <div class="example-flex-container">
+            <div class="example-button-container">
+              <button mat-fab aria-label="Example icon button with a delete icon" (click)="getByExpiry()">
+                <mat-icon>search</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+    </div>
     <mat-accordion>
   
       <mat-expansion-panel class="expansion-medicine" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">

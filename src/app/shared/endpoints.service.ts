@@ -19,4 +19,5 @@ export class EndpointsService {
   public addNewMedicine: string = this.baseUrl + 'Medicines/AddNewMedicine/';
   public updateMedicine: string = this.baseUrl + 'Medicines/UpdateMed/';
   public deleteMedicine: string = this.baseUrl + 'Medicines/DeleteMed?';
+  public getByExpiryDate: string = this.baseUrl + 'Medicines/GetbyExpiryDate?';
 }

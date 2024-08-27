@@ -29,6 +29,9 @@ import {
   ComponentPortal
 } from "./chunk-ELS7JTFF.js";
 import {
+  SelectionModel
+} from "./chunk-CGIDZ2MI.js";
+import {
   animate,
   animateChild,
   query,
@@ -37,9 +40,6 @@ import {
   transition,
   trigger
 } from "./chunk-QJDXS5RB.js";
-import {
-  SelectionModel
-} from "./chunk-CGIDZ2MI.js";
 import {
   A,
   A11yModule,

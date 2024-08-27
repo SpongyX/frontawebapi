@@ -58,5 +58,10 @@ export class DashboardService {
       return this.http.delete<any>(url);
     }
     
+    getByExpiryDate(expirydate: string):Observable<any> {
+      let url = `${this.endpoints.getByExpiryDate}expirydate=${expirydate}`;
+      return this.http.get<any>(url);
+
+    }
     
 }
