@@ -27,17 +27,31 @@
           <div class="example-flex-container">
             <div class="example-button-container">
               <button mat-fab aria-label="Example icon button with a delete icon" (click)="onSubmitDate()">
-                <mat-icon>search</mat-icon>
+                <mat-icon >search</mat-icon>
               </button>
             </div>
           </div>
         </div>
     </div>
     <div class="filter-date-container">
-      <mat-form-field class="filter-form-field">
-        <mat-label>Search...</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Aspirin" #input>
-      </mat-form-field>
+        <mat-form-field class="filter-form-field" [formGroup]="campaignType">
+          <mat-label>Type</mat-label>
+          <input type="text"
+                 placeholder="Get by type"
+                 aria-label="Type"
+                 matInput
+                 [formControl]="myControl"
+                 [matAutocomplete]="auto"
+                 formControlName="type">
+                  <button matSuffix mat-icon-button aria-label="Clear" (click)="clearAndFetchAll()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="getByType($event)">
+            <mat-option *ngFor="let medicine of filteredOptions | async" [value]="medicine.type">
+              {{medicine.type}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
       
   <!-- by expiry date-->
   <mat-form-field [formGroup]="campaignExpiry">

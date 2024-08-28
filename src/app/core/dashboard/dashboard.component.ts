@@ -15,22 +15,24 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Medicines } from '../../interfaces/medicines.interface';
 import { HomeService } from '../../mainpage/dashboard/home.service';
 import { DashboardService } from './dashboard.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { UpdateMedComponent } from './update-med/update-med/update-med.component';
 import { CommonModule } from '@angular/common';
+import { map, Observable, startWith } from 'rxjs';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   providers: [provideNativeDateAdapter(),
 
-    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+  { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
   ],
   imports: [
 
-    MatPaginatorModule, 
+    MatPaginatorModule,
     MatTableModule,
     MatSlideToggleModule,
     MatFormFieldModule,
@@ -44,77 +46,113 @@ import { CommonModule } from '@angular/common';
     MatCheckboxModule,
     MatExpansionModule,
     MatDialogActions,
-    CommonModule
-    
-    
-    
+    CommonModule,
+    MatAutocompleteModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
+
+
 export class DashboardComponent {
+  showAutocomplete: boolean = true;
+  myControl = new FormControl('');
+  // options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions: Observable<Medicines[]> | undefined;
 
+  medicines: Medicines[] = [];
 
-
-
-
-  
   readonly dialog = inject(MatDialog);
   readonly panelOpenState = signal(false);
-isButtonEnabled: boolean = false; 
+  isButtonEnabled: boolean = false;
 
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  
-  displayedColumns: string[] = ['position', 'name',  'description', 'stock', 'active', 'edit', 'delete'];
+  displayedColumns: string[] = ['position', 'name', 'description', 'stock', 'active', 'edit', 'delete'];
   dataSource = new MatTableDataSource<Medicines>();
- 
+
   readonly campaignOne = new FormGroup({
     start: new FormControl(new Date()),
     end: new FormControl(new Date()),
   });
   readonly campaignTwo = new FormGroup({
-    start: new FormControl(new Date() ),
-    end: new FormControl(new Date() ),
+    start: new FormControl(new Date()),
+    end: new FormControl(new Date()),
   });
   readonly campaignExpiry = new FormGroup({
     expiry: new FormControl(new Date()),
   });
+
+  readonly campaignType = new FormGroup({
+    type: new FormControl(),
+  });
+
   readonly medicineForm = new FormGroup({
     name: new FormControl(),
     description: new FormControl(),
     stock: new FormControl(),
 
   });
-  medicines: Medicines[] = [];
 
   constructor(private dashboardService: DashboardService,
     private _snackBar: MatSnackBar
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
- this.Fetchall();
+    this.Fetchall();
+
   }
-Fetchall() {
-  this.dashboardService.getAllMed().subscribe((medicines) => {
-    this.medicines = medicines; 
-    this.dataSource.data = this.medicines; 
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    console.log(this.medicines);
-  });
-}
+
+  private _filter(value: string): Medicines[] {
+
+    const filterValue = value.toLowerCase();
+    const filteredMedicines = this.medicines.filter(medicine =>
+      medicine.type.toLowerCase().includes(filterValue)
+    );
+
+    const uniqueMedicinesMap = new Map<string, Medicines>();
+    filteredMedicines.forEach(medicine => {
+      if (!uniqueMedicinesMap.has(medicine.type)) {
+        uniqueMedicinesMap.set(medicine.type, medicine);
+      }
+    });
+    const uniqueMedicines = Array.from(uniqueMedicinesMap.values());
+    console.log(uniqueMedicines);
+    return uniqueMedicines;
+  }
+
+  // Fetchall() {
+  //   this.dashboardService.getAllMed().subscribe((medicines) => {
+  //     this.medicines = medicines; 
+  //     this.dataSource.data = this.medicines; 
+  //     this.dataSource.paginator = this.paginator;
+  //     this.dataSource.sort = this.sort;
+  //     console.log(this.medicines);
+  //   });
+  // }
+
+  Fetchall() {
+    this.dashboardService.getAllMed().subscribe((medicines) => {
+      this.medicines = medicines;
+      this.dataSource.data = this.medicines;
+      this.filteredOptions = this.myControl.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value || ''))
+      );
+    });
+  }
+
   // openSnackBar() {
   //   this._snackBar.open("Saved");
   // }
-
   // openDialog(medicine: any) {
   //   this.dialog.open(UpdateMedComponent, {
   //     data: medicine
   //   });
   // }
-  
+
   openDialog(medicine: any): void {
     const dialogRef = this.dialog.open(UpdateMedComponent, {
       data: medicine
@@ -135,22 +173,17 @@ Fetchall() {
     }
   }
 
-
   onToggleChange(element: any): void {
-  
     this.dashboardService.isActiveUpdateStatus(element.med_id, element.is_active).subscribe(response => {
       console.log('After toggle:', element.is_active);
     }, error => {
       console.error('Error updating status', error);
     });
   }
-  
-  
 
   onCheckChange(element: any) {
-  console.log(element.med_id)
-  this.isButtonEnabled = !!element.med_id; 
-
+    console.log(element.med_id)
+    this.isButtonEnabled = !!element.med_id;
   }
 
   deleteItem(element: any) {
@@ -172,27 +205,18 @@ Fetchall() {
       console.error('Element is undefined');
     }
   }
-  
-  
-   
-    
 
   onSubmitDate(): void {
     let formValue = this.campaignOne.value;
-    
-    // Convert start and end to Date objects if they are valid
+
     let startDate = formValue.start instanceof Date ? formValue.start : null;
     let endDate = formValue.end instanceof Date ? formValue.end : null;
-  
-    // Convert dates to strings, or handle null cases
+
     let formattedStartDate = startDate ? this.formatDate(startDate) : '';
     let formattedEndDate = endDate ? this.formatDate(endDate) : '';
-  
-    // Log the formatted dates
+
     console.log(formattedStartDate);
     console.log(formattedEndDate);
-  
-    // Call the service method with formatted dates
     this.dashboardService.getByRange(formattedStartDate, formattedEndDate).subscribe(
       (dataByDateRange: any) => {
         this.dataSource.data = dataByDateRange;
@@ -202,25 +226,46 @@ Fetchall() {
       }
     );
   }
-   
 
-getByExpiry(): void {
-  let formValue = this.campaignExpiry.value;
-  let expirydate = formValue.expiry instanceof Date ? formValue.expiry : null;
-  let formattedStartDate = expirydate ? this.formatDate(expirydate) : '';
-  console.log(formattedStartDate);
-  this.dashboardService.getByExpiryDate(formattedStartDate).subscribe(
-    (dataByDateRange: any) => {
-      this.dataSource.data = dataByDateRange;
-    },
-    (error: any) => {
-      console.error('Error fetching medicines', error);
-    }
-  );
-}
+
+  getByExpiry(): void {
+    let formValue = this.campaignExpiry.value;
+    let expirydate = formValue.expiry instanceof Date ? formValue.expiry : null;
+    let formattedStartDate = expirydate ? this.formatDate(expirydate) : '';
+    console.log(formattedStartDate);
+    this.dashboardService.getByExpiryDate(formattedStartDate).subscribe(
+      (dataByDateRange: any) => {
+        this.dataSource.data = dataByDateRange;
+      },
+      (error: any) => {
+        console.error('Error fetching medicines', error);
+      }
+    );
+  }
+
+  getByType(event: MatAutocompleteSelectedEvent): void {
+    const typevalue = event.option.value;
+    this.dashboardService.getByType(typevalue).subscribe(
+      (response: any) => {
+        this.dataSource.data = response;
+      },
+      (error) => {
+        console.error('Error occurred:', error);
+      }
+    );
+
+    console.log(this.campaignType.value);
+  }
+
+  clearAndFetchAll(): void {
+    // this.showAutocomplete = false;
+    this.myControl.reset();
+    this.campaignType.controls['type'].reset();
+    this.Fetchall(); 
+  }
+
 
   addMed() {
-
     if (this.medicineForm.valid) {
       const newMedicines: any = this.medicineForm.value;
       this.dashboardService.AddnewMed(newMedicines).subscribe({
@@ -239,17 +284,17 @@ getByExpiry(): void {
       console.log('Form is invalid');
     }
   }
-  
+
   // updateMed() {
   //   console.log("test")
   // }
 
   /////////////////////////////////////////////////////////////////////////////////////////////
   // Helper function to format a Date object with time set to 00:00:00.000
-   formatDate(date: Date): string {
+  formatDate(date: Date): string {
     // Reset time to 00:00:00.000
     date.setHours(0, 0, 0, 0);
-  
+
     // Extract components
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
@@ -258,7 +303,7 @@ getByExpiry(): void {
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
     const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
-  
+
     // Format timezone offset
     const offset = date.getTimezoneOffset();
     const sign = offset > 0 ? '-' : '+';
@@ -266,20 +311,17 @@ getByExpiry(): void {
     const offsetHours = String(Math.floor(absOffset / 60)).padStart(2, '0');
     const offsetMinutes = String(absOffset % 60).padStart(2, '0');
     const formattedOffset = `${sign}${offsetHours}${offsetMinutes}`;
-  
+
     // Construct formatted date string
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds} ${formattedOffset}`;
   }
   ///////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
 }
 
 
-  
 
 
 
-  
-  
+
+

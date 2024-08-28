@@ -63,5 +63,10 @@ export class DashboardService {
       return this.http.get<any>(url);
 
     }
+    getByType(type: string):Observable<any> {
+      let url = `${this.endpoints.getByType}type=${type}`;
+      return this.http.get<any>(url);
+
+    }
     
 }

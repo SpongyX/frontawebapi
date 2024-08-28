@@ -12,7 +12,6 @@ export class EndpointsService {
   private baseUrl = environment.apiUrl;
   
   // Medicines Endpoint
-
   public FetchallMedicines: string = this.baseUrl + 'Medicines/GetMedicines/';
   public isActiveUpdate: string = this.baseUrl + 'Medicines/isActiveUpdate/';
   public getByRange: string = this.baseUrl + 'Medicines/GetByDateRange?';
@@ -20,4 +19,6 @@ export class EndpointsService {
   public updateMedicine: string = this.baseUrl + 'Medicines/UpdateMed/';
   public deleteMedicine: string = this.baseUrl + 'Medicines/DeleteMed?';
   public getByExpiryDate: string = this.baseUrl + 'Medicines/GetbyExpiryDate?';
+  public getByType: string = this.baseUrl + 'Medicines/GetbyType?';
+
 }
